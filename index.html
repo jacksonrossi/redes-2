@@ -1,0 +1,192 @@
+<!-- 
+	PÁGINA WEB DO TRABALHO DE REDES II DE 2021/2
+	JACKSON ROSSI BORGUEZANI - GRR20176573
+	BRUNO EDUARDO FARIAS - GRR20186715
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trabalho de Redes II</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		body {
+			background-color: #F8F8FF;
+			/*font-family: 'Bebas Neue', cursive;*/
+			/*font-family: 'Anek Bangla', sans-serif;*/
+		}
+		a {
+			text-decoration: none;
+		}
+
+		a:hover {
+			color: #66CDAA;
+		}
+
+		code {
+			font-family: Consolas,"courier new";
+	  		color: crimson;
+	  		background-color: #f1f1f1;
+	  		padding: 2px;
+	  		font-size: 105%;
+		}
+
+		fonte {
+			font-family: 'Bebas Neue', cursive;
+		}
+	</style>
+	<link rel="preconnect" href="https://fonts.googleapis.com"> 
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+	<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon">
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item mt-2">
+					<a href="#execucao" class="text-white">Execução</a>
+				</li>
+				<li class="nav-item mt-2">
+					<a href="#funcionamento" class="text-white">Funcionamento</a>
+				</li>
+				<li class="nav-item mt-2">
+					<a href="#codigoFonte" class="text-white">Código Fonte</a>
+				</li>
+			</ul>
+		</div>
+
+	</nav>
+	<main class="container">
+		<section class="text-center">
+			<h1>Trabalho de Redes II</h1>
+			<h2>2021-2</h2>
+			<hr>
+			<p class="mb-0">JACKSON ROSSI BORGUEZANI - GRR20176573</p>
+			<p>BRUNO EDUARDO FARIAS - GRR20186715</p>
+			</h3>
+			<hr><br>
+		</section>
+		<section id="execucao">
+			<h2>Execução</h2>
+			<p class="mb-1">
+				* Executar em terminais diferentes
+			</p>
+			<table class="table table-bordered">
+				<tbody>
+					<td>
+						<p>1) Executar os servidores 1, 2 e 3:</p>
+						<code class="hljs xml">
+							$ python3 servidor_1.py <br>
+							$ python3 servidor_2.py <br>
+							$ python3 servidor_3.py
+						</code>
+					</td>
+					<td>
+						<p>2) Executar a tabela cache:</p>
+						<code class="hljs xml">
+							$ python3 cache.py
+						</code>
+					</td>
+					<td>
+						<p>3) Executar o cliente:</p>
+						<code class="hljs xml">
+							$ python3 cliente.py
+						</code>
+					</td>
+				</tbody>
+			</table>
+		</section>
+		<hr>
+		<section id="funcionamento">
+			<h2>Funcionamento</h2>
+			<div>
+				<u><b>Servidor</b></u>
+				<p>
+					O servidor abre um socket (cada servidor em uma porta) e fica aguardando por requisições para informar sua temperatura. A temperatura é escolhida aleatoriamente por um gerador, variando entre dois valores compatíveis com as cidades escolhidas: 
+					<table class="table table-bordered table-stripped text-center">
+						<thead>
+							<th>Nome da Cidade</th>
+							<th>Temp. Mínima</th>
+							<th>Temp. Máxima</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Dallol (Etiópia)</td>
+								<td>40º</td>
+								<td>50º</td>
+							</tr>
+							<tr>
+								<td>Snag (Canadá)</td>
+								<td>-30º</td>
+								<td>-10º</td>
+							</tr>
+							<tr>
+								<td>Ghadames (Líbia)</td>
+								<td>50º</td>
+								<td>70º</td>
+							</tr>
+						</tbody>
+					</table>
+				</p>
+			</div><br>
+			<div>
+				<u><b>Cache</b></u>
+				<p>
+					A cache é implementada utilizando uma tabela hash que mantém os registros das temperaturas das cidades por um período máximo de 30 segundos. Quando o cliente precisa saber a temperatura de uma dessas cidades, ele faz uma requisição para a tabela cache que, por sua vez, verifica se existe entrada válida (que esteja dentro dos 30 segundos). Caso não encontre, a cache faz uma requisição para o servidor e insere/atualiza o valor na tabela hash com o timestamp atualizado. 
+					
+				</p>
+			</div><br>
+			<div>
+				<u><b>Cliente</b></u>
+				<p>
+					preencher
+				</p>
+			</div>
+			<hr>
+			<div class="text-center"><b>Visão Geral</b></div>
+			<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-04-16T15:47:27.861Z\&quot; agent=\&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15\&quot; etag=\&quot;0Kx5L-slJoat-cL2elnm\&quot; version=\&quot;17.4.2\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;C5RBs43oDa-KdzZeNtuy\&quot; name=\&quot;Page-1\&quot;&gt;7VhZU9swEP41foTxEZzkkYQE2lKmbWiBR2FvbDWyN8jKxa9HsmU7jjM5GDJA2rxEu1pd+317jA2nG80vORmH39EHZtimPzecC8O2rYblyD+lWWQat3GWKQJOfW1UKgb0GbTS1NoJ9SGpGApEJui4qvQwjsETFR3hHGdVsyGy6qljEkBNMfAIq2vvqC/CTNuym6X+CmgQ5idbbjubiUhurF+ShMTH2ZLK6RlOlyOKbBTNu8CU83K/3H1Z3LHrkXv59WfyRH53vt3e/DnJNuvvs6R4AodYvO3Wdrb1lLCJ9pd+q1jkDuQ4iX1Qm5iG0wlFxOTQksO/IMRCA04mAqUKuQgxwJiwa8SxthtiLLSZpWSI/XMFrJQfGXqjTNWnjOkzpKTtW1JKBMdRgZ3aoABCGTPyCKxDvFGQXrSLDLmcijEGtZUvyaDfUl6uV2o7O/pWY5DghHuwwU5HiyA8gE37uZmdut8STzVyl4ARCL6QBhwYEXRaJTPRMREUdiXucqCh34MGTo0GXUalQ2ADGxQSs5AKGIxJ6pKZTCBVhiwjLx/XCRhJEo3bFlj3g2UKXMB8oyP17ElTR7NOZ1Zby7MyOVh5xIdLiaFhHsj3jZrvBzT616JQoswX98XJUnhQwulZLl7MlycvFq+iydbodXeM3ry4bQ1fzbKcUDtHs97pB1L5rtIEh8NEXmyVcsWBr2fhWY2FN0bXMc4drFFxO5qfmqzvRKnmfoyyPjyj3BqjbkHmNTMmqtsjXii1/XqeCzF6nCTba0sFUcWXPokoU965AjYFQT2ypgIRRoNYCp4qbnw9VeSRNA6k5JbSbUpNmasPV5ksa6UyNddUJnNNZWodqjI1awj+gqcJTWiaGZpFflDOUKCq4QD4lPoyno6tcWi4H61xaO2esj91Qv403UMewG+W6zX1zFNH/irsO1xDUdrkxLerxHeaK4TOnqtXvX0dae/UHx95U/JahsOcivvSUkoP+nA1Lhcp4b2jwrKPrQXKb7jE3V4i0iRtqU9qCitVNP20iHLynAqQraA+8f+3SJVEaK+0SEVtXa7B7TU12DpYEc5JW2mSBPK0y5VK1QmZftnyHntb1LAO1xZJsfzamsVo+c3a6b0A&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+		</section><hr>
+		<section id="exemplosExecucao">
+			<h2>Exemplos de Execução</h2><br>
+
+			<p>inserir umas imagens das logs de execução (quando pronto)</p>
+		</section><hr>
+		<section id="codigoFonte">
+			<h2>Código Fonte</h2><br>
+			<table class="table table-bordered table-stripped text-center">
+				<thead>
+					<th>Servidores</th>
+					<th>Cache</th>
+					<th>Cliente</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<a href="#">servidor_1.py.txt</a><br>
+							<a href="#">servidor_2.py.txt</a><br>
+							<a href="#">servidor_3.py.txt</a>
+						</td>
+						<td>
+							<a href="#">cache.py.txt</a>
+						</td>
+						<td>
+							<a href="#">cliente.py.txt</a>
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+		</section>
+		
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+	</main>
+</body>
+</html>
