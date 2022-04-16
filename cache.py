@@ -1,3 +1,8 @@
+#
+# TRABALHO REDES II
+# JACKSON ROSSI BORGUEZANI - GRR20176573
+# BRUNO EDUARDO FARIAS - GRR20186715
+#
 import socket
 import time
 import json
@@ -14,6 +19,7 @@ N_SERVER = [NAME_1, NAME_2, NAME_3]
 HOST_C = "localhost"
 PORT_C = 9000
 
+#realiza as conexões com os servidores
 def conexao_servidor(host, port):
     cache = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     destino = (host, port)
@@ -22,6 +28,7 @@ def conexao_servidor(host, port):
     time.sleep(1)
     return cache
 
+#inicializa dados na cache
 def insere_dados(ide, nome, temperatura, timestamp, conexao):
     server = {
         "id": ide,
@@ -33,6 +40,7 @@ def insere_dados(ide, nome, temperatura, timestamp, conexao):
     }
     return server
 
+#inicializa cache
 def inicia_cache(servidores):
     print('\n> Iniciando Tabela Cache')
     cache = []
@@ -47,6 +55,7 @@ def inicia_cache(servidores):
         cache.append(server)
     return cache
 
+#verifica se os dados foram inicializados e se o tempo está válido (dentro dos 30 segundos)
 def dados_validos(server):
     tempo_atual = datetime.now()
     tempo_cache = server.get("timestamp")
@@ -55,6 +64,7 @@ def dados_validos(server):
     else:
         return False
 
+#solicita a temperatura do servidor (quando não encontrado ou não está válido na cache)
 def solicita_temp(server):
     conexao = server.get("conexao")
 
@@ -62,6 +72,8 @@ def solicita_temp(server):
     temp = conexao.recv(TAM_MSG)
 
     temp = temp.decode("utf-8")
+
+    print(':: Obteve a temperatura {} do servidor {}'.format(temp, server.get("nome_servidor")))
 
     return{
         "id": server.get("id"),
@@ -73,6 +85,7 @@ def solicita_temp(server):
 
     }
 
+#atualiza a cache com as novas temperaturas
 def atualiza_cache(server_u):
     TABELA_CACHE[server_u.get("id")] = server_u
     #print("update: s {}, temp {}", TABELA_CACHE[server_u.get("id")].get("id"), TABELA_CACHE[server_u.get("id")].get("temperatura"))
@@ -91,38 +104,48 @@ if __name__ == "__main__":
 
     TABELA_CACHE = inicia_cache(servidores)
 
+    #abre socket no modo passivo
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     tcp.bind((HOST_C, PORT_C))
     tcp.listen()
 
     print('\nCache Iniciada no IP', HOST_C, 'na porta', PORT_C)
-    conexao, cli = tcp.accept()
+    conexao, cli = tcp.accept() #aceita conexões
 
     while True:
+        #recebe conexões
         msg = conexao.recv(TAM_MSG)
         if not msg:
             break
         else:
             dados = []
-            print("\n> Checando temperatura do Servidor...\n")
+            print("\n> Checando temperatura do Servidor... Hora atual: {}\n".format(datetime.now().time()))
             for server in TABELA_CACHE:
                 #em_cache = True
+                #se está em cache e com timestamp válido (dentro dos 30s)
                 if dados_validos(server):
-                    print('{} : Dados em cache válidos\n::   {}ºC'.format(server.get("nome_servidor"), server.get("temperatura")))
+                    print('{} : Dados em cache válidos\n::   {}ºC Horário: {}'.format(server.get("nome_servidor"), server.get("temperatura"), server.get("timestamp")))
                     is_cache = True
                 else:
-                    print('{} : Dados em cache expirados\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
+                    if server.get("inicializado"):
+                        print('{} : Dados em cache expirados (última atualização: {})\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor"), server.get("timestamp")))
+                    else:
+                        print('{} : Dados em cache expirados \n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
+
+                    #solicita temperatura e atualiza cache
                     server_up = solicita_temp(server)
                     atualiza_cache(server_up)
                     server = server_up
                     is_cache = False
 
+                #json para ser enviado ao cliente
                 dados.append({
                     "nome_servidor": server.get("nome_servidor"),
                     "temperatura": server.get("temperatura"),
                     "is_cache": is_cache
                 })
 
+        #envia resposta pro cliente
         conexao.sendall(str(json.dumps(dados)).encode("utf-8"))
         print()
         time.sleep(1)

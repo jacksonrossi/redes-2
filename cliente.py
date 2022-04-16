@@ -1,8 +1,14 @@
+#
+# TRABALHO REDES II
+# JACKSON ROSSI BORGUEZANI - GRR20176573
+# BRUNO EDUARDO FARIAS - GRR20186715
+#
 import socket
 import json
 import time
 from cache import HOST_C, PORT_C, TAM_MSG
 
+#cria a conexão com a cache
 def conexao_cache(host, port):
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     destino = (host, port)
@@ -11,6 +17,7 @@ def conexao_cache(host, port):
     time.sleep(1)
     return cliente
 
+#imprime para o cliente na tela a temperatura
 def imprime_temperatura(temp):
     print('\n-------------------------------------------------------')
     print('Servidor\t\tTemperatura\t\tCache')
@@ -31,11 +38,14 @@ if __name__ == "__main__":
 
     mensagem = input()
 
+    #trata mensagens do usuário até chegar CTRL+X e ENTER
     while mensagem != '\x18':
         if mensagem == 'CONSULTA' or mensagem == 'consulta':
             print("\nChecando temperatura do Servidor...")
+            #envia solicitação de temperaturas pra cache
             cliente.sendall(b"Get Temp")
 
+            #recebe as temperaturas
             temp = cliente.recv(TAM_MSG)
             temp = json.loads(temp.decode("utf-8"))
 
