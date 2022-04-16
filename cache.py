@@ -1,5 +1,6 @@
 import socket
 import time
+import json
 from random import randrange
 from datetime import datetime, timedelta
 from servidor_1 import HOST as HOST_1, PORT as PORT_1, NAME as NAME_1
@@ -10,14 +11,16 @@ TAM_MSG = 1024    #em bytes
 TABELA_CACHE = []
 DURACAO = 30    #em segundos
 N_SERVER = [NAME_1, NAME_2, NAME_3]
+HOST_C = "localhost"
+PORT_C = 9000
 
 def conexao_servidor(host, port):
-    cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    cache = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     destino = (host, port)
-    cliente.connect(destino)
+    cache.connect(destino)
 
     time.sleep(1)
-    return cliente
+    return cache
 
 def insere_dados(ide, nome, temperatura, timestamp, conexao):
     server = {
@@ -31,7 +34,7 @@ def insere_dados(ide, nome, temperatura, timestamp, conexao):
     return server
 
 def inicia_cache(servidores):
-    print('\n****Iniciando Tabela Cache***\n')
+    print('\n> Iniciando Tabela Cache')
     cache = []
     for i in range (0, 3):
         server = insere_dados(
@@ -70,17 +73,9 @@ def solicita_temp(server):
 
     }
 
-def atualiza_cache(server, server_u):
-    
-    #for s in TABELA_CACHE: 
-    #    if s.get("id") == server_u.get("id"):
-    #        TABELA_CACHE.insert(server.get("id"), server_u)
-    TABELA_CACHE[server.get("id")] = server_u
-
-def imprime_temperatura():
-    for s in TABELA_CACHE:
-        print("Servidor {} está com temperatura em {}°".format(s.get("nome_servidor"), s.get("temperatura")))
-
+def atualiza_cache(server_u):
+    TABELA_CACHE[server_u.get("id")] = server_u
+    #print("update: s {}, temp {}", TABELA_CACHE[server_u.get("id")].get("id"), TABELA_CACHE[server_u.get("id")].get("temperatura"))
 
 if __name__ == "__main__":
     servidores = []
@@ -96,21 +91,44 @@ if __name__ == "__main__":
 
     TABELA_CACHE = inicia_cache(servidores)
 
+    tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tcp.bind((HOST_C, PORT_C))
+    tcp.listen()
+
+    print('\nCache Iniciada no IP', HOST_C, 'na porta', PORT_C)
+    conexao, cli = tcp.accept()
+
     while True:
-        temp_servidores = []
-        print("> Checando temperatura do Servidor")
-        for server in TABELA_CACHE:
-            em_cache = True
-            if dados_validos(server):
-                print('{} : Dados em cache válidos'.format(server.get("nome_servidor")))
-            else:
-                print('{} : Dados em cache expirados ... Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
-                server_up = solicita_temp(server)
-                atualiza_cache(server, server_up)
+        msg = conexao.recv(TAM_MSG)
+        if not msg:
+            break
+        else:
+            dados = []
+            print("\n> Checando temperatura do Servidor...\n")
+            for server in TABELA_CACHE:
+                #em_cache = True
+                if dados_validos(server):
+                    print('{} : Dados em cache válidos\n::   {}ºC'.format(server.get("nome_servidor"), server.get("temperatura")))
+                    is_cache = True
+                else:
+                    print('{} : Dados em cache expirados\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
+                    server_up = solicita_temp(server)
+                    atualiza_cache(server_up)
+                    server = server_up
+                    is_cache = False
 
-        
-        imprime_temperatura()
+                dados.append({
+                    "nome_servidor": server.get("nome_servidor"),
+                    "temperatura": server.get("temperatura"),
+                    "is_cache": is_cache
+                })
 
+        conexao.sendall(str(json.dumps(dados)).encode("utf-8"))
         print()
-        time.sleep(3)
+        time.sleep(1)
 
+
+    print('> Encerrando conexão com servidores ...\n')
+    servidores[0].close()
+    servidores[1].close()
+    servidores[2].close()
