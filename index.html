@@ -104,6 +104,9 @@
 		<hr>
 		<section id="funcionamento">
 			<h2>Funcionamento</h2>
+			<ul>
+				<li>As conexões implementam o protocolo TCP.</li>
+			</ul>
 			<div>
 				<u><b>Servidor</b></u>
 				<p>
@@ -144,7 +147,7 @@
 			<div>
 				<u><b>Cliente</b></u>
 				<p>
-					preencher
+					O cliente faz a conexão com a cache e recebe interações do usuário. Quando o usuário solicita as temperaturas, uma requisição é feita para a cache, que faz os tratamentos necessários e responde com um json dos dados.
 				</p>
 			</div>
 			<hr>
@@ -154,7 +157,24 @@
 		<section id="exemplosExecucao">
 			<h2>Exemplos de Execução</h2><br>
 
-			<p>inserir umas imagens das logs de execução (quando pronto)</p>
+			<div class="d-flex justify-content-center">
+				<img src="imgs/ex_log_cliente.png" width="50%" alt="Execução do Cliente">
+			</div>
+			<figcaption class="text-center">Execução do Cliente</figcaption>
+			<br>
+
+			<div class="d-flex justify-content-center">
+				<img src="imgs/ex_log_cache.png" width="50%" alt="Execução do Cliente">
+			</div>
+			<figcaption class="text-center">Execução da Cache</figcaption>
+			<br>
+
+			<div class="d-flex justify-content-center">
+				<img src="imgs/ex_log_servidor.png" width="50%" alt="Execução do Cliente">
+			</div>
+			<figcaption class="text-center">Execução de um Servidor</figcaption>
+			<br>
+			
 		</section><hr>
 		<section id="codigoFonte">
 			<h2>Código Fonte</h2><br>
