@@ -148,10 +148,10 @@ if __name__ == "__main__":
                 else:
                     if server.get("inicializado"):
                         #print('{} : Dados em cache expirados (última atualização: {})\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor"), server.get("timestamp")))
-                        logging.info('{} : Dados em cache expirados (última atualização: {})\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor"), server.get("timestamp")))
+                        logging.info('{} : Dados em cache EXPIRADOS (última atualização: {})\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor"), server.get("timestamp")))
                     else:
                         #print('{} : Dados em cache expirados \n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
-                        logging.info('{} : Dados em cache expirados \n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
+                        logging.info('{} : Dados em cache EXPIRADOS (NÃO INICIALIZADOS) \n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
 
                     #solicita temperatura e atualiza cache
                     server_up = solicita_temp(server)
