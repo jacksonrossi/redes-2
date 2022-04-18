@@ -6,6 +6,7 @@
 import socket
 import time
 import json
+import logging
 from random import randrange
 from datetime import datetime, timedelta
 from servidor_1 import HOST as HOST_1, PORT as PORT_1, NAME as NAME_1
@@ -42,7 +43,8 @@ def insere_dados(ide, nome, temperatura, timestamp, conexao):
 
 #inicializa cache
 def inicia_cache(servidores):
-    print('\n> Iniciando Tabela Cache')
+    #print('\n> Iniciando Tabela Cache')
+    logging.info('\n> Iniciando Tabela Cache')
     cache = []
     for i in range (0, 3):
         server = insere_dados(
@@ -73,7 +75,8 @@ def solicita_temp(server):
 
     temp = temp.decode("utf-8")
 
-    print(':: Obteve a temperatura {} do servidor {}'.format(temp, server.get("nome_servidor")))
+    #print(':: Obteve a temperatura {} do servidor {}'.format(temp, server.get("nome_servidor")))
+    logging.info(':: Obteve a temperatura {} ºC do servidor {}'.format(temp, server.get("nome_servidor")))
 
     return{
         "id": server.get("id"),
@@ -91,15 +94,27 @@ def atualiza_cache(server_u):
     #print("update: s {}, temp {}", TABELA_CACHE[server_u.get("id")].get("id"), TABELA_CACHE[server_u.get("id")].get("temperatura"))
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler("debug.log"),
+            logging.StreamHandler()
+        ]
+    )
+
     servidores = []
 
-    print("Conectando com servidor {} ..".format(N_SERVER[0]))
+    #print("Conectando com servidor {} ..".format(N_SERVER[0]))
+    logging.info("Conectando com servidor {} ..".format(N_SERVER[0]))
     servidores.append(conexao_servidor(HOST_1, PORT_1))
 
-    print("Conectando com servidor {} ..".format(N_SERVER[1]))
+    #print("Conectando com servidor {} ..".format(N_SERVER[1]))
+    logging.info("Conectando com servidor {} ..".format(N_SERVER[1]))
     servidores.append(conexao_servidor(HOST_2, PORT_2))
 
-    print("Conectando com servidor {} ..".format(N_SERVER[2]))
+    #print("Conectando com servidor {} ..".format(N_SERVER[2]))
+    logging.info("Conectando com servidor {} ..".format(N_SERVER[2]))
     servidores.append(conexao_servidor(HOST_3, PORT_3))
 
     TABELA_CACHE = inicia_cache(servidores)
@@ -109,7 +124,8 @@ if __name__ == "__main__":
     tcp.bind((HOST_C, PORT_C))
     tcp.listen()
 
-    print('\nCache Iniciada no IP', HOST_C, 'na porta', PORT_C)
+    #print('\nCache Iniciada no IP', HOST_C, 'na porta', PORT_C)
+    logging.info('Cache iniciada no IP {} na porta {}'.format(HOST_C, PORT_C))
     conexao, cli = tcp.accept() #aceita conexões
 
     while True:
@@ -118,19 +134,24 @@ if __name__ == "__main__":
         if not msg:
             break
         else:
+            logging.info('\n\n\nRecebeu conexão...')
             dados = []
-            print("\n> Checando temperatura do Servidor... Hora atual: {}\n".format(datetime.now().time()))
+            #print("\n> Checando temperatura do Servidor... Hora atual: {}\n".format(datetime.now().time()))
+            logging.info('Checando temperatura do Servidor...')
             for server in TABELA_CACHE:
                 #em_cache = True
                 #se está em cache e com timestamp válido (dentro dos 30s)
                 if dados_validos(server):
-                    print('{} : Dados em cache válidos\n::   {}ºC Horário: {}'.format(server.get("nome_servidor"), server.get("temperatura"), server.get("timestamp")))
+                    #print('{} : Dados em cache válidos\n::   {}ºC Horário: {}'.format(server.get("nome_servidor"), server.get("temperatura"), server.get("timestamp")))
+                    logging.info('{} : Dados em cache válidos\n::   {}ºC Timestamp do dado na cache: {}'.format(server.get("nome_servidor"), server.get("temperatura"), server.get("timestamp")))
                     is_cache = True
                 else:
                     if server.get("inicializado"):
-                        print('{} : Dados em cache expirados (última atualização: {})\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor"), server.get("timestamp")))
+                        #print('{} : Dados em cache expirados (última atualização: {})\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor"), server.get("timestamp")))
+                        logging.info('{} : Dados em cache expirados (última atualização: {})\n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor"), server.get("timestamp")))
                     else:
-                        print('{} : Dados em cache expirados \n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
+                        #print('{} : Dados em cache expirados \n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
+                        logging.info('{} : Dados em cache expirados \n:: Solicitando temperatura do servidor'.format(server.get("nome_servidor")))
 
                     #solicita temperatura e atualiza cache
                     server_up = solicita_temp(server)
@@ -147,11 +168,13 @@ if __name__ == "__main__":
 
         #envia resposta pro cliente
         conexao.sendall(str(json.dumps(dados)).encode("utf-8"))
-        print()
+        #print()
+        logging.info('')
         time.sleep(1)
 
 
-    print('> Encerrando conexão com servidores ...\n')
+    #print('> Encerrando conexão com servidores ...\n')
+    logging.info('> Encerrando conexão com servidores ...\n')
     servidores[0].close()
     servidores[1].close()
     servidores[2].close()
