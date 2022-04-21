@@ -8,26 +8,36 @@ A cache mantém uma tabela cache com os dados, com um prazo de validade para cad
 Para os 3 servidores, a dupla pode tanto implementá-los como servidores do trabalho, utilizando número aleatórios dentro de uma faixa razoável para os valores de temperatura ou, alternativamente, obter as informações adequadamente na Web.
 Devem ser apresentados logs para múltiplas execuções. Mostre com clareza situações em que uma requisição de usuário encontra/não encontra a cache com informações válidas.
 
-### Implementação
-
-Todo
 
 ### Como executar
 
-Digite os seguintes comandos no terminal, individualmente
+Digite os seguintes comandos em terminais individuais:
 
 ```bash
-$ python3 servidor1.py
+$ python3 servidor_1.py
 ```
 ```bash
-$ python3 servidor2.py
+$ python3 servidor_2.py
 ```
 ```bash
-$ python3 servidor3.py
+$ python3 servidor_3.py
 ```
 ```bash
 $ python3 cache.py
 ```
 ```bash
 $ python3 cliente.py
+```
+Para realizar a consulta da temperatura, na interface do cliente, utilize:
+- Consultar a temperatura de todos os servidores
+```bash
+> consultar
+```
+- Consultar a temperatura de um servidor específico
+```bash
+> consultar <i>
+```
+Por exemplo, consultar o servidor 1
+```bash
+> consultar 1
 ```
