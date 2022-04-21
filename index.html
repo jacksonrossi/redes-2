@@ -12,8 +12,6 @@
 	<style type="text/css">
 		body {
 			background-color: #F8F8FF;
-			/*font-family: 'Bebas Neue', cursive;*/
-			/*font-family: 'Anek Bangla', sans-serif;*/
 		}
 		a {
 			text-decoration: none;
@@ -69,6 +67,8 @@
 			<h1>Trabalho de Redes II</h1>
 			<h2>2021-2</h2>
 			<hr>
+			<p class="mb-0">IMPLEMENTAÇÃO DE TABELA CACHE EM HASH</p>
+			<hr>
 			<p class="mb-0">JACKSON ROSSI BORGUEZANI - GRR20176573</p>
 			<p>BRUNO EDUARDO FARIAS - GRR20186715</p>
 			</h3>
@@ -105,6 +105,37 @@
 					</td>
 				</tbody>
 			</table>
+			<br>
+			<b><u>No cliente:</u></b>
+			<table class="table table-bordered table-stripped">
+				<tbody>
+					<tr>
+						<td>
+							<code class="hljs xml">
+							$ consultar
+							</code>
+						</td>
+						<td>Retorna a temperatura de todos os servidores.</td>
+					</tr>
+					<tr>
+						<td>
+							<code class="hljs xml">
+							$ consultar i
+							</code>
+						</td>
+						<td>Retorna a temperatura apenas do servidor i.</td>
+					</tr>
+					<tr>
+						<td>
+							<code class="hljs xml">
+							$ CTRL+X e ENTER
+							</code>
+						</td>
+						<td>Finaliza execução.</td>
+					</tr>
+				</tbody>
+			</table>
+
 		</section>
 		<hr>
 		<section id="funcionamento">
@@ -142,23 +173,46 @@
 						</tbody>
 					</table>
 				</p>
+				<br>
+				<b>Funcionamento do Servidor TCP</b>
+				<ol>
+					<li>Caso forneçamos um nome de protocolo de transporte, converter em número;</li>
+					<li>Criar o socket (função socket);</li>
+					<li>Colocar um endereço IP e porta no socket (função bind);</li>
+					<li>Instruir o sistema operacional para colocar o socket em modo passivo (função listen);</li>
+					<li>Aceitar uma nova conexão (função accept);</li>
+					<li>Enviar/Receber dados (permanecer nesse passo enquanto tiver dados para enviar/receber);</li>
+					<li>Fechar o socket;</li>
+				</ol>
 			</div><br>
+
 			<div>
 				<u><b>Cache</b></u>
 				<p>
 					A cache é implementada utilizando uma tabela hash que mantém os registros das temperaturas das cidades por um período máximo de 30 segundos. Quando o cliente precisa saber a temperatura de uma dessas cidades, ele faz uma requisição para a tabela cache que, por sua vez, verifica se existe entrada válida (que esteja dentro dos 30 segundos). Caso não encontre, a cache faz uma requisição para o servidor e insere/atualiza o valor na tabela hash com o timestamp atualizado. 
-					
 				</p>
+				<b>Obs.: Como a cache é pequena, quando uma temperatura precisa ser atualizada (buscada no servidor), todas as demais são atualizadas também.</b>
 			</div><br>
 			<div>
 				<u><b>Cliente</b></u>
 				<p>
 					O cliente faz a conexão com a cache e recebe interações do usuário. Quando o usuário solicita as temperaturas, uma requisição é feita para a cache, que faz os tratamentos necessários e responde com um json dos dados.
 				</p>
+				<br>
+				<b>Funcionamento do Cliente TCP</b>
+				<ol>
+					<li>Caso forneçamos um nome de um servidor hospedeiro, converter em endereço IP;</li>
+					<li>Caso forneçamos um nome de protocolo de transporte, converter em número;</li>
+					<li>Criar o socket (função socket);</li>
+					<li>Conectar com o servidor (função connect);</li>
+					<li>Aceitar uma nova conexão (função accept);</li>
+					<li>Enviar/Receber dados (permanecer nesse passo enquanto tiver dados para enviar/receber);</li>
+					<li>Fechar o socket;</li>
+				</ol>
 			</div>
 			<hr>
 			<div class="text-center"><b>Visão Geral</b></div>
-			<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-04-16T15:47:27.861Z\&quot; agent=\&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15\&quot; etag=\&quot;0Kx5L-slJoat-cL2elnm\&quot; version=\&quot;17.4.2\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;C5RBs43oDa-KdzZeNtuy\&quot; name=\&quot;Page-1\&quot;&gt;7VhZU9swEP41foTxEZzkkYQE2lKmbWiBR2FvbDWyN8jKxa9HsmU7jjM5GDJA2rxEu1pd+317jA2nG80vORmH39EHZtimPzecC8O2rYblyD+lWWQat3GWKQJOfW1UKgb0GbTS1NoJ9SGpGApEJui4qvQwjsETFR3hHGdVsyGy6qljEkBNMfAIq2vvqC/CTNuym6X+CmgQ5idbbjubiUhurF+ShMTH2ZLK6RlOlyOKbBTNu8CU83K/3H1Z3LHrkXv59WfyRH53vt3e/DnJNuvvs6R4AodYvO3Wdrb1lLCJ9pd+q1jkDuQ4iX1Qm5iG0wlFxOTQksO/IMRCA04mAqUKuQgxwJiwa8SxthtiLLSZpWSI/XMFrJQfGXqjTNWnjOkzpKTtW1JKBMdRgZ3aoABCGTPyCKxDvFGQXrSLDLmcijEGtZUvyaDfUl6uV2o7O/pWY5DghHuwwU5HiyA8gE37uZmdut8STzVyl4ARCL6QBhwYEXRaJTPRMREUdiXucqCh34MGTo0GXUalQ2ADGxQSs5AKGIxJ6pKZTCBVhiwjLx/XCRhJEo3bFlj3g2UKXMB8oyP17ElTR7NOZ1Zby7MyOVh5xIdLiaFhHsj3jZrvBzT616JQoswX98XJUnhQwulZLl7MlycvFq+iydbodXeM3ry4bQ1fzbKcUDtHs97pB1L5rtIEh8NEXmyVcsWBr2fhWY2FN0bXMc4drFFxO5qfmqzvRKnmfoyyPjyj3BqjbkHmNTMmqtsjXii1/XqeCzF6nCTba0sFUcWXPokoU965AjYFQT2ypgIRRoNYCp4qbnw9VeSRNA6k5JbSbUpNmasPV5ksa6UyNddUJnNNZWodqjI1awj+gqcJTWiaGZpFflDOUKCq4QD4lPoyno6tcWi4H61xaO2esj91Qv403UMewG+W6zX1zFNH/irsO1xDUdrkxLerxHeaK4TOnqtXvX0dae/UHx95U/JahsOcivvSUkoP+nA1Lhcp4b2jwrKPrQXKb7jE3V4i0iRtqU9qCitVNP20iHLynAqQraA+8f+3SJVEaK+0SEVtXa7B7TU12DpYEc5JW2mSBPK0y5VK1QmZftnyHntb1LAO1xZJsfzamsVo+c3a6b0A&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+			<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-04-21T19:36:19.222Z\&quot; agent=\&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15\&quot; etag=\&quot;w0mB8LbyyJpk6PoGMTeH\&quot; version=\&quot;17.4.6\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;C5RBs43oDa-KdzZeNtuy\&quot; name=\&quot;Page-1\&quot;&gt;7VnbVuowEP2aPupqG1rgESgq3hW8vpwV29jmGBoMQcCvP0kbaEtY3pa14vEFMjvJNJnLnoEaoDOc7TI4io5ogIhhm8HMAJ5h247jiE8JzFPArSkgZDhIISsD+vgZKdBU6AQHaFxYyCklHI+KoE/jGPm8gEHG6LS47J6S4lNHMEQa0Pch0dErHPAoRRt2PcP3EA6jxZMtt5nODOFisbrJOIIBneYg0DVAh1HK09Fw1kFE2m5hl6ve/IocPri7+2fjR3jRPhgcX26lynbes2V5BYZi/mHVk53b/Z7j/XEORmcNAPyLM6+7Zaur8fnCXigQ5lMiZTyiIY0h6WZom9FJHCCp1RRStuaQ0pEALQH+RZzPVSzACacCiviQqFk0w/w6N76RqrYdJXkzpTkR5gsh5mx+nRdyu6SYbUukwr5TxPAQccQUmF5a3nQlRl4xsFo3phPmoxesqgKGQxYi/sI6axlFIvsQFUdkc7GPIQI5fioeDqo8CJfrMl+LgXL3O1yvDvkEyUQ9qUOwuD/SQiLnOrUHMY5mH7CdflelpaFOo0jGcpU8zVLWWjBKlEtXxyzJOrWNSQwhfHV8L3j8tfgGVcZ3vUoPZl67yc283YMbRXdvDQe3ynCwNLobdI8EcNwyZDV3iTh5+46JUShHnVZnTyjf0YJozBl9WLYSdtH9okUYyXXDWSibqe17Qqd+BBnfDpCPx5jGYtE0whz1RzCx6VSsK5FX7foKsQJHJ1ZzDbEuwc93RHNjEnOZhFne3RTSbn0Slp1v4K3tRaPKhANawp2jx4lIAqMDjFY9+QQ0tQsUX1RPwj5iTzigrIqOxG1+t5bE0Qx6LI3YACeafYQteDH+IcGhIB/Plx2eKAxtaTEsfia11MQQB0GaamiMn+FdokpG84jimCd3cdqG40ldIrvGaaIlpJcwYocSKgtOTGOp5R4TsgKV5anaavNY1z1VW+MouzSG25xfVZ/YepTNeu4mNJ2WszHF7Qe6vlml612Nnrv9QULQ4omm1z0enJ/oJc4TmHl63rpdN9cVc5etw57X8n5AL1ozizxtr6uo64jaAmUxdUPzWb939H9XU2AXvQTMiqtpc00fySmLYQrK7tAMpOBDP6rkzyt3pQEBzTWBDb6yVbT05vu3V0xcZa1wUK3qXrH2S0GrTnLqr+fTlzppoTjnpCravLLbLKuxCX2WpRftFp+IdHj+vhVh+X6jhIogxOwdZDKXe5ELuv8A&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
 		</section><hr>
 		<section id="exemplosExecucao">
 			<h2>Exemplos de Logs de Execução</h2><br>
@@ -193,15 +247,15 @@
 				<tbody>
 					<tr>
 						<td>
-							<a href="#">servidor_1.py.txt</a><br>
-							<a href="#">servidor_2.py.txt</a><br>
-							<a href="#">servidor_3.py.txt</a>
+							<a href="servidor_1.py.txt" target="_blank">servidor_1.py.txt</a><br>
+							<a href="servidor_2.py.txt" target="_blank">servidor_2.py.txt</a><br>
+							<a href="servidor_3.py.txt" target="_blank">servidor_3.py.txt</a>
 						</td>
 						<td>
-							<a href="#">cache.py.txt</a>
+							<a href="cache.py.txt" target="_blank">cache.py.txt</a>
 						</td>
 						<td>
-							<a href="#">cliente.py.txt</a>
+							<a href="cliente.py.txt" target="_blank">cliente.py.txt</a>
 						</td>
 					</tr>
 					
