@@ -105,12 +105,12 @@ def consulta(server, dados):
             logging.info('{} : Dados em cache EXPIRADOS (NÃO INICIALIZADOS)'.format(server.get("nome_servidor")))
             logging.info('Solicitando temperatura dos servidores')
         #solicita temperatura e atualiza cache
-        #for serv in TABELA_CACHE:
-        server_up = solicita_temp(serv)
-        atualiza_cache(server_up)
-        server = server_up
-        is_cache = False
-        #server = TABELA_CACHE[server.get("id")]
+        for serv in TABELA_CACHE:
+            server_up = solicita_temp(serv)
+            atualiza_cache(server_up)
+            #server = server_up
+            is_cache = False
+        server = TABELA_CACHE[server.get("id")]
 
     #json para ser enviado ao cliente
     dados.append({
