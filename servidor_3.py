@@ -61,4 +61,4 @@ if __name__ == "__main__":
         print()
         logging.info('Servidor 3 - Finalizando conexão cache {}'.format(cache))
         conexao.close()
-        #break
+        break

@@ -1,4 +1,4 @@
-<!-- 
+<!--
 	PÁGINA WEB DO TRABALHO DE REDES II DE 2021/2
 	JACKSON ROSSI BORGUEZANI - GRR20176573
 	BRUNO EDUARDO FARIAS - GRR20186715
@@ -24,7 +24,7 @@
 		code {
 			font-family: Consolas,"courier new";
 	  		color: crimson;
-	  		background-color: #f1f1f1;
+
 	  		padding: 2px;
 	  		font-size: 105%;
 		}
@@ -33,8 +33,8 @@
 			font-family: 'Bebas Neue', cursive;
 		}
 	</style>
-	<link rel="preconnect" href="https://fonts.googleapis.com"> 
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 </head>
@@ -47,16 +47,16 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item mt-2">
-					<a href="#execucao" class="text-white">Execução</a>
+					<a href="#execucao" class="nav-link">Execução</a>
 				</li>
 				<li class="nav-item mt-2">
-					<a href="#funcionamento" class="text-white">Funcionamento</a>
+					<a href="#funcionamento" class="nav-link">Funcionamento</a>
 				</li>
 				<li class="nav-item mt-2">
-					<a href="#exemplosExecucao" class="text-white">Exemplos de Logs de Execução</a>
+					<a href="#exemplosExecucao" class="nav-link">Exemplos de Logs de Execução</a>
 				</li>
 				<li class="nav-item mt-2">
-					<a href="#codigoFonte" class="text-white">Código Fonte</a>
+					<a href="#codigoFonte" class="nav-link">Código Fonte</a>
 				</li>
 			</ul>
 		</div>
@@ -65,40 +65,45 @@
 	<main class="container">
 		<section class="text-center">
 			<h1>Trabalho de Redes II</h1>
-			<h2>2021-2</h2>
-			<hr>
-			<p class="mb-0">IMPLEMENTAÇÃO DE TABELA CACHE EM HASH</p>
+			<h2>Cache em Tabela Hash</h2>
+      <h3 class="h5">(ERE 2021-2)</h3>
+
 			<hr>
 			<p class="mb-0">JACKSON ROSSI BORGUEZANI - GRR20176573</p>
 			<p>BRUNO EDUARDO FARIAS - GRR20186715</p>
-			</h3>
+
 			<hr><br>
 		</section>
 		<section id="execucao">
 			<h2>Execução</h2>
 			<p class="mb-1">
-				<b>
-					* Executar cada comando em um terminal diferente
-				</b>
+					Executar cada arquivo em um <b>terminal separado</b>, com o comando:
 			</p>
-			<table class="table table-bordered">
+			<table class="table table-striped table-border">
+        <thead>
+          <tr>
+            <th>1º Executar os servidores 1, 2 e 3</th>
+            <th>2º Executar a tabela cache</th>
+            <th>3º Executar o cliente</th>
+          </tr>
+        </thead>
 				<tbody>
 					<td>
-						<p>1) Executar os servidores 1, 2 e 3:</p>
-						<code class="hljs xml">
+
+						<code>
 							$ python3 servidor_1.py <br>
 							$ python3 servidor_2.py <br>
 							$ python3 servidor_3.py
 						</code>
 					</td>
 					<td>
-						<p>2) Executar a tabela cache:</p>
+
 						<code class="hljs xml">
 							$ python3 cache.py
 						</code>
 					</td>
 					<td>
-						<p>3) Executar o cliente:</p>
+
 						<code class="hljs xml">
 							$ python3 cliente.py
 						</code>
@@ -106,35 +111,46 @@
 				</tbody>
 			</table>
 			<br>
-			<b><u>No cliente:</u></b>
-			<table class="table table-bordered table-stripped">
+      <h3 class="h5"><u><b>Como consultar a temperatura:</b></u></h3>
+      <p class="mb-1">
+					Na interface do cliente, são aceitos os seguinstes comandos:
+			</p>
+
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Comando</th>
+            <th>Retorno</th>
+          </tr>
+        </thead>
 				<tbody>
 					<tr>
 						<td>
-							<code class="hljs xml">
-							$ consultar
-							</code>
+              <code class="hljs xml">
+  							> consultar
+  						</code>
 						</td>
 						<td>Retorna a temperatura de todos os servidores.</td>
 					</tr>
 					<tr>
 						<td>
-							<code class="hljs xml">
-							$ consultar i
-							</code>
+              <code class="hljs xml">
+  							> consultar &lt;i&gt;
+  						</code>
 						</td>
-						<td>Retorna a temperatura apenas do servidor i.</td>
+						<td>Retorna a temperatura apenas do servidor <code>i</code>, sendo <code>i</code> o número do servidor.</td>
 					</tr>
 					<tr>
 						<td>
-							<code class="hljs xml">
-							$ CTRL+X e ENTER
-							</code>
+              <code class="hljs xml">
+  							> CTRL+X e ENTER
+  						</code>
 						</td>
 						<td>Finaliza execução.</td>
 					</tr>
 				</tbody>
 			</table>
+
 
 		</section>
 		<hr>
@@ -142,12 +158,13 @@
 			<h2>Funcionamento</h2>
 			<ul>
 				<li>As conexões implementam o protocolo TCP.</li>
-				<li>A execução mantém logs tanto nos consoles como no arquivo <b>debug.log</b> no folder dos arquivos .py.</li>
+				<li>A execução mantém logs tanto nos consoles como no arquivo <code>debug.log</code> no folder dos arquivos <code>.py</code>.</li>
 			</ul>
 			<div>
-				<u><b>Servidor</b></u>
+
+        <h3 class="h5"><u><b>Servidor</b></u></h3>
 				<p>
-					O servidor abre um socket (cada servidor em uma porta) e fica aguardando por requisições para informar sua temperatura. A temperatura é escolhida aleatoriamente por um gerador, variando entre dois valores definidos para as cidades escolhidas: 
+					O servidor abre um socket (cada servidor em uma porta) e fica aguardando por requisições para informar sua temperatura. A temperatura é escolhida aleatoriamente por um gerador, variando entre dois valores definidos para as cidades escolhidas:
 					<table class="table table-bordered table-stripped text-center">
 						<thead>
 							<th>Nome da Cidade</th>
@@ -187,14 +204,14 @@
 			</div><br>
 
 			<div>
-				<u><b>Cache</b></u>
+        <h3 class="h5"><u><b>Cache</b></u></h3>
 				<p>
-					A cache é implementada utilizando uma tabela hash que mantém os registros das temperaturas das cidades por um período máximo de 30 segundos. Quando o cliente precisa saber a temperatura de uma dessas cidades, ele faz uma requisição para a tabela cache que, por sua vez, verifica se existe entrada válida (que esteja dentro dos 30 segundos). Caso não encontre, a cache faz uma requisição para o servidor e insere/atualiza o valor na tabela hash com o timestamp atualizado. 
+					A cache é implementada utilizando uma tabela hash que mantém os registros das temperaturas das cidades por um período máximo de 30 segundos. Quando o cliente precisa saber a temperatura de uma dessas cidades, ele faz uma requisição para a tabela cache que, por sua vez, verifica se existe entrada válida (que esteja dentro dos 30 segundos). Caso não encontre, a cache faz uma requisição para o servidor e insere/atualiza o valor na tabela hash com o timestamp atualizado.
 				</p>
 				<b>Obs.: Como a cache é pequena, quando uma temperatura precisa ser atualizada (buscada no servidor), todas as demais são atualizadas também.</b>
 			</div><br>
 			<div>
-				<u><b>Cliente</b></u>
+				<h3 class="h5"><u><b>Cliente</b></u></h3>
 				<p>
 					O cliente faz a conexão com a cache e recebe interações do usuário. Quando o usuário solicita as temperaturas, uma requisição é feita para a cache, que faz os tratamentos necessários e responde com um json dos dados.
 				</p>
@@ -211,9 +228,11 @@
 				</ol>
 			</div>
 			<hr>
-			<div class="text-center"><b>Visão Geral</b></div>
+			<div class="text-center"><h3 class="h5"><b>Visão Geral</b></h3></div>
+      <center>
 			<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-04-21T19:36:19.222Z\&quot; agent=\&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15\&quot; etag=\&quot;w0mB8LbyyJpk6PoGMTeH\&quot; version=\&quot;17.4.6\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;C5RBs43oDa-KdzZeNtuy\&quot; name=\&quot;Page-1\&quot;&gt;7VnbVuowEP2aPupqG1rgESgq3hW8vpwV29jmGBoMQcCvP0kbaEtY3pa14vEFMjvJNJnLnoEaoDOc7TI4io5ogIhhm8HMAJ5h247jiE8JzFPArSkgZDhIISsD+vgZKdBU6AQHaFxYyCklHI+KoE/jGPm8gEHG6LS47J6S4lNHMEQa0Pch0dErHPAoRRt2PcP3EA6jxZMtt5nODOFisbrJOIIBneYg0DVAh1HK09Fw1kFE2m5hl6ve/IocPri7+2fjR3jRPhgcX26lynbes2V5BYZi/mHVk53b/Z7j/XEORmcNAPyLM6+7Zaur8fnCXigQ5lMiZTyiIY0h6WZom9FJHCCp1RRStuaQ0pEALQH+RZzPVSzACacCiviQqFk0w/w6N76RqrYdJXkzpTkR5gsh5mx+nRdyu6SYbUukwr5TxPAQccQUmF5a3nQlRl4xsFo3phPmoxesqgKGQxYi/sI6axlFIvsQFUdkc7GPIQI5fioeDqo8CJfrMl+LgXL3O1yvDvkEyUQ9qUOwuD/SQiLnOrUHMY5mH7CdflelpaFOo0jGcpU8zVLWWjBKlEtXxyzJOrWNSQwhfHV8L3j8tfgGVcZ3vUoPZl67yc283YMbRXdvDQe3ynCwNLobdI8EcNwyZDV3iTh5+46JUShHnVZnTyjf0YJozBl9WLYSdtH9okUYyXXDWSibqe17Qqd+BBnfDpCPx5jGYtE0whz1RzCx6VSsK5FX7foKsQJHJ1ZzDbEuwc93RHNjEnOZhFne3RTSbn0Slp1v4K3tRaPKhANawp2jx4lIAqMDjFY9+QQ0tQsUX1RPwj5iTzigrIqOxG1+t5bE0Qx6LI3YACeafYQteDH+IcGhIB/Plx2eKAxtaTEsfia11MQQB0GaamiMn+FdokpG84jimCd3cdqG40ldIrvGaaIlpJcwYocSKgtOTGOp5R4TsgKV5anaavNY1z1VW+MouzSG25xfVZ/YepTNeu4mNJ2WszHF7Qe6vlml612Nnrv9QULQ4omm1z0enJ/oJc4TmHl63rpdN9cVc5etw57X8n5AL1ozizxtr6uo64jaAmUxdUPzWb939H9XU2AXvQTMiqtpc00fySmLYQrK7tAMpOBDP6rkzyt3pQEBzTWBDb6yVbT05vu3V0xcZa1wUK3qXrH2S0GrTnLqr+fTlzppoTjnpCravLLbLKuxCX2WpRftFp+IdHj+vhVh+X6jhIogxOwdZDKXe5ELuv8A&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
-		</section><hr>
+      </center>
+    </section><hr>
 		<section id="exemplosExecucao">
 			<h2>Exemplos de Logs de Execução</h2><br>
 
@@ -230,11 +249,11 @@
 			<br>
 
 			<div class="d-flex justify-content-center">
-				<img src="imgs/ex_log_servidor.png" width="85%" alt="Execução do Cliente">
+				<img src="imgs/ex_log_servidor.png" width="75%" alt="Execução do Cliente">
 			</div>
 			<figcaption class="text-center">Execução de um dos Servidores</figcaption>
 			<br>
-			
+
 		</section><hr>
 		<section id="codigoFonte">
 			<h2>Código Fonte</h2><br>
@@ -263,12 +282,12 @@
 			<br>
 			<div class="d-flex justify-content-center">
 				<p>
-					<a href="GRR20186715_GRR20176573.tar" target="_blank">CLIQUE AQUI</a> PARA FAZER DOWNLOAD DE TODOS OS ARQUIVOS
+					<a href="GRR20186715_GRR20176573.zip" target="_blank">Clique aqui</a> para fazer donwload do arquivo ZIP do código.
 				</p>
 			</div>
 			<br>
 		</section>
-		
+
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
